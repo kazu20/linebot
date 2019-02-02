@@ -1,0 +1,34 @@
+version: '3'
+
+services:
+  # HTTPS Reverse Proxy
+  https-portal:
+    image: steveltn/https-portal:1
+    container_name: https-proxy
+    ports:
+      - '80:80'
+      - '443:443'
+    restart: always
+    environment:
+      STAGE: 'production'
+      DOMAINS: 'YOUR_DOMAIN -> http://line_bot_api:5000'
+    volumes:
+    # - /var/run/docker.sock:/var/run/docker.sock:ro
+    - org-chimata-ssl-certs:/var/lib/https-portal
+    - org-chimata-vhosts:/var/www/vhosts
+
+  line_bot_api:
+    image: linebot_api
+    container_name: my_linebot_api
+    environment:
+      GOOGLE_APPLICATION_CREDENTIALS: '/app/Private.json'
+      LINE_TOKEN: 'YOUER_LINE_TOKEN'
+      LINE_CHANNEL_SECRET: 'YOUER_LINE_CHANNEL_SECRET'
+    ports:
+      - '5000:5000'
+
+volumes:
+  # SSL証明書
+  org-chimata-ssl-certs:
+  # 静的ウェブサイト
+  org-chimata-vhosts:
