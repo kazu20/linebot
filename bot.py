@@ -12,7 +12,7 @@ from linebot.exceptions import (
     InvalidSignatureError
 )
 from linebot.models import (
-    MessageEvent, TextMessage, TextSendMessage,
+    MessageEvent, TextMessage, TextSendMessage, ImageMessage, StickerMessage,
 )
 import os
 
@@ -68,5 +68,18 @@ def handle_message(event):
         event.reply_token,
         TextSendMessage(text=text))
 
+@handler.add(MessageEvent, message=StickerMessage)
+def handle_sticker(event):
+    line_bot_api.reply_message(
+        event.reply_token,
+        TextSendMessage(text="スタンプはスタンプは使えません"))
+
+@handler.default()
+def default(event):
+    line_bot_api.reply_message(
+        event.reply_token,
+        TextSendMessage(text="テキストメッセージを送ってください。"))
+
 if __name__ == "__main__":
     app.run(host='0.0.0.0')
+
