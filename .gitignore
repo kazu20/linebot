@@ -1,2 +1,5 @@
 .idea/
 .vscode/
+./Private.json
+./*json
+
