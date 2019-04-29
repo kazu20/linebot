@@ -96,7 +96,7 @@ def handle_message(event):
         positive = round(positive, 1)
 
 
-        negative_num = np.sum(sentiment_ave < 0.5 )
+        negative_num = np.sum(sentiment_ave < -0.5 )
         negative = (negative_num/sentiment_ave.size) * 100
         negative = round(negative, 1)
 
