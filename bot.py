@@ -17,6 +17,7 @@ from linebot.models import (
     ImageMessage, StickerMessage,
 )
 import os
+import numpy as np
 
 # Line MessagingAPI
 line_bot_api = LineBotApi(os.environ.get('LINE_TOKEN'))
@@ -75,15 +76,48 @@ def handle_message(event):
 
     datastore_client.put(Sentiment)
 
-    # メッセージのsentimentに合わせて、応答を返す
-    if sentiment.score > 0.8:
-        text = "激嬉"
-    elif sentiment.score > 0.3:
-        text = "嬉"
-    elif sentiment.score < -0.3:
-        text = "怒"
+    # 特定のキーワード（hogehoge)がきたら、メッセージのsentimentの統計を主力する
+    if event.message.text == 'hogehoge':
+        # sentiment > 0.5の場合はポジティブ
+        # sentiiment < -0.5の場合はネガティブ
+        # -0.5 < sentiment < 0.5の場合はニュートラル
+        # 最新100件についての割合を出す
+        query = datastore_client.query(kind='Sentiment')
+        query.add_filter('userId', '=', userId)
+        result = list(query.fetch())
+
+        average = [0]
+        for sentiment_list in result:
+            average.append(sentiment_list['sentiment'])
+        sentiment_ave = np.array(average)
+
+        positive_num = np.sum(sentiment_ave > 0.5 )
+        positive = (positive_num/sentiment_ave.size) * 100
+        positive = round(positive, 1)
+
+
+        negative_num = np.sum(sentiment_ave < 0.5 )
+        negative = (negative_num/sentiment_ave.size) * 100
+        negative = round(negative, 1)
+
+        neutral_num = sentiment_ave.size - positive_num - negative_num
+        neutral = (neutral_num/sentiment_ave.size) * 100
+        neutral = round(neutral, 1)
+
+        positive = str(positive)
+        negative = str(negative)
+        neutral = str(neutral)
+
+        text = 'positive:' + positive  + 'negative: ' + negative  + 'neutral: ' + neutral
+        print(text)
     else:
-        text = "普通"
+        # メッセージのsentimentに合わせて、応答を返す
+        if sentiment.score > 0.5:
+            text = 'ポジティブ:' + str(round(sentiment.score,1))
+        elif sentiment.score < -0.5:
+            text = 'ネガティブ:' + str(round(sentiment.score,1))
+        else:
+            text = 'ニュートラル:' + str(round(sentiment.score,1))
 
     line_bot_api.reply_message(
         event.reply_token,
