@@ -86,24 +86,28 @@ def handle_message(event):
         query.add_filter('userId', '=', userId)
         result = list(query.fetch())
 
-        average = [0]
-        for sentiment_list in result:
-            average.append(sentiment_list['sentiment'])
-        sentiment_ave = np.array(average)
+        # queryの結果からsentimentだけのnumpy arrayを作成
+        sentiment_list = [0]
+        for result_list in result:
+            sentiment_list.append(result_list['sentiment'])
+        sentiment_num = np.array(sentiment_list)
 
-        positive_num = np.sum(sentiment_ave > 0.5 )
-        positive = (positive_num/sentiment_ave.size) * 100
+        # sentiment > 0.5となる要素の割合
+        positive_num = np.sum(sentiment_num > 0.5 )
+        positive = (positive_num/sentiment_num.size) * 100
         positive = round(positive, 1)
 
-
-        negative_num = np.sum(sentiment_ave < -0.5 )
-        negative = (negative_num/sentiment_ave.size) * 100
+        # sentiment < -0.5となる要素の割合
+        negative_num = np.sum(sentiment_num < -0.5 )
+        negative = (negative_num/sentiment_num.size) * 100
         negative = round(negative, 1)
 
-        neutral_num = sentiment_ave.size - positive_num - negative_num
-        neutral = (neutral_num/sentiment_ave.size) * 100
+        # -0.5 < sentiment < 0.5となる要素の割合
+        neutral_num = sentiment_num.size - positive_num - negative_num
+        neutral = (neutral_num/sentiment_num.size) * 100
         neutral = round(neutral, 1)
 
+        # それぞれの割合を文字列変換
         positive = str(positive)
         negative = str(negative)
         neutral = str(neutral)
