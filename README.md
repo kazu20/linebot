@@ -25,7 +25,7 @@ $ git clone https://github.com/kazu20/linebot/
 $ ダウンロードしたPrivate.jsonをDockerfileと同じディレクトリにコピーする。
 $ docker build -t YOUR_IMAGE_NAME
 ```
-イメージができたらdocker-compose.ymlにLINE_TOKEN、LINE_CHANNEL_SECRETを指定して、docker-compose upする。
+イメージができたらdocker-compose.ymlにLINE_TOKEN、LINE_CHANNEL_SECRET,YOUR_DOMAINを指定して、docker-compose upする。
  ```
  $ docker-compose up -d
  ```
