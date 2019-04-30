@@ -116,12 +116,13 @@ def handle_message(event):
         print(text)
     else:
         # メッセージのsentimentに合わせて、応答を返す
+        sentiment_str = str(round(sentiment.score, 1))
         if sentiment.score > 0.5:
-            text = 'ポジティブ:' + str(round(sentiment.score,1))
+            text = 'ポジティブ:' + sentiment_str
         elif sentiment.score < -0.5:
-            text = 'ネガティブ:' + str(round(sentiment.score,1))
+            text = 'ネガティブ:' + sentiment_str
         else:
-            text = 'ニュートラル:' + str(round(sentiment.score,1))
+            text = 'ニュートラル:' + sentiment_str
 
     line_bot_api.reply_message(
         event.reply_token,
