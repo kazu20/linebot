@@ -47,34 +47,15 @@ def callback():
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
 
-    # Instantiates a client
-    client = language.LanguageServiceClient()
-
-    # The text to analyze
-    document = types.Document(
-        content=event.message.text,
-        type=enums.Document.Type.PLAIN_TEXT)
-
-    # set profile
-    userId = event.source.user_id
-    profile = line_bot_api.get_profile(userId)
-    timestamp = event.timestamp
-
-    # Detects the sentiment of the text
-    sentiment = client.analyze_sentiment(document=document).document_sentiment
-
     # Create Datastore Entity
     datastore_client = datastore.Client()
     kind = 'Sentiment'
     task_key = datastore_client.key(kind)
 
-    Sentiment = datastore.Entity(key=task_key)
-    Sentiment['sentiment'] = sentiment.score
-    Sentiment['userId'] = userId
-    Sentiment['user_display_name'] = profile.display_name
-    Sentiment['timestamp'] = timestamp
-
-    datastore_client.put(Sentiment)
+    # set profile
+    userId = event.source.user_id
+    profile = line_bot_api.get_profile(userId)
+    timestamp = event.timestamp
 
     # 特定のキーワード（hogehoge)がきたら、メッセージのsentimentの統計を主力する
     if event.message.text == 'hogehoge':
@@ -114,6 +95,25 @@ def handle_message(event):
 
         text = profile.display_name + 'さんはポジティブな発言が' + positive + '%、' + 'ネガティブな発言が' + negative +'%、' + 'その他の発言が' + neutral +'%でした。'
     else:
+
+       # Instantiates a client
+        client = language.LanguageServiceClient()
+
+        # The text to analyze
+        document = types.Document(
+            content=event.message.text,
+            type=enums.Document.Type.PLAIN_TEXT)
+
+        # Detects the sentiment of the text
+        sentiment = client.analyze_sentiment(document=document).document_sentiment
+
+        Sentiment = datastore.Entity(key=task_key)
+        Sentiment['sentiment'] = sentiment.score
+        Sentiment['userId'] = userId
+        Sentiment['user_display_name'] = profile.display_name
+        Sentiment['timestamp'] = timestamp
+
+        datastore_client.put(Sentiment)
         # メッセージのsentimentに合わせて、応答を返す
         sentiment_str = str(round(sentiment.score, 1))
         if sentiment.score > 0.5:
