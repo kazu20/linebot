@@ -74,12 +74,12 @@ def handle_message(event):
         sentiment_num = np.array(sentiment_list)
 
         # sentiment > 0.5となる要素の割合
-        positive_num = np.sum(sentiment_num > 0.5 )
+        positive_num = np.sum(sentiment_num > 0.5)
         positive = (positive_num/sentiment_num.size) * 100
         positive = round(positive, 1)
 
         # sentiment < -0.5となる要素の割合
-        negative_num = np.sum(sentiment_num < -0.5 )
+        negative_num = np.sum(sentiment_num < -0.5)
         negative = (negative_num/sentiment_num.size) * 100
         negative = round(negative, 1)
 
@@ -93,7 +93,8 @@ def handle_message(event):
         negative = str(negative)
         neutral = str(neutral)
 
-        text = profile.display_name + 'さんはポジティブな発言が' + positive + '%、' + 'ネガティブな発言が' + negative +'%、' + 'その他の発言が' + neutral +'%でした。'
+        text = profile.display_name + 'さんはポジティブな発言が' + positive + '%、' + \
+            'ネガティブな発言が' + negative + '%、' + 'その他の発言が' + neutral + '%でした。'
     else:
 
        # Instantiates a client
@@ -105,7 +106,8 @@ def handle_message(event):
             type=enums.Document.Type.PLAIN_TEXT)
 
         # Detects the sentiment of the text
-        sentiment = client.analyze_sentiment(document=document).document_sentiment
+        sentiment = client.analyze_sentiment(
+            document=document).document_sentiment
 
         Sentiment = datastore.Entity(key=task_key)
         Sentiment['sentiment'] = sentiment.score
