@@ -112,7 +112,7 @@ def handle_message(event):
         negative = str(negative)
         neutral = str(neutral)
 
-        text = 'positive:' + positive  + 'negative: ' + negative  + 'neutral: ' + neutral
+        text = profile.display_name + 'さんはポジティブな発言が' + positive + '%、' + 'ネガティブな発言が' + negative +'%、' + 'その他の発言が' + neutral +'%でした。'
     else:
         # メッセージのsentimentに合わせて、応答を返す
         sentiment_str = str(round(sentiment.score, 1))
