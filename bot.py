@@ -113,7 +113,6 @@ def handle_message(event):
         neutral = str(neutral)
 
         text = 'positive:' + positive  + 'negative: ' + negative  + 'neutral: ' + neutral
-        print(text)
     else:
         # メッセージのsentimentに合わせて、応答を返す
         sentiment_str = str(round(sentiment.score, 1))
