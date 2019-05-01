@@ -1,0 +1,8 @@
+indexes:
+
+- kind: Sentiment
+  properties:
+  - name: userId
+  - name: timestamp
+    direction: desc
+    
