@@ -96,6 +96,10 @@ def handle_message(event):
 
         text = profile.display_name + 'さんはポジティブな発言が' + positive + '%、' + \
             'ネガティブな発言が' + negative + '%、' + 'その他の発言が' + neutral + '%でした。'
+
+        line_bot_api.reply_message(
+            event.reply_token,
+            TextSendMessage(text=text))
     else:
 
        # Instantiates a client
@@ -117,18 +121,6 @@ def handle_message(event):
         Sentiment['timestamp'] = timestamp
 
         datastore_client.put(Sentiment)
-        # メッセージのsentimentに合わせて、応答を返す
-        sentiment_str = str(round(sentiment.score, 1))
-        if sentiment.score > 0.5:
-            text = 'ポジティブ:' + sentiment_str
-        elif sentiment.score < -0.5:
-            text = 'ネガティブ:' + sentiment_str
-        else:
-            text = 'ニュートラル:' + sentiment_str
-
-    line_bot_api.reply_message(
-        event.reply_token,
-        TextSendMessage(text=text))
 
 
 @handler.add(MessageEvent, message=StickerMessage)
