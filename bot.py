@@ -53,9 +53,17 @@ def handle_message(event):
     task_key = datastore_client.key(kind)
 
     # set profile
-    userId = event.source.user_id
-    profile = line_bot_api.get_profile(userId)
-    timestamp = event.timestamp
+    if event.source.type == 'user':
+        userId = event.source.user_id
+        profile = line_bot_api.get_profile(userId)
+    elif event.source.type == 'room':
+        userId = event.source.user_id
+        roomId = event.source.room_id
+        profile = line_bot_api.get_room_member_profile(roomId, userId)
+    elif event.source.type == 'groop':
+        userId = event.source.user_id
+        groupId = event.source.group_id
+        profile = line_bot_api.get_group_member_profile(groupId, userId)
 
     # 特定のキーワード（hogehoge)がきたら、メッセージのsentimentの統計を主力する
     if event.message.text == 'hogehoge':
@@ -118,7 +126,7 @@ def handle_message(event):
         Sentiment['sentiment'] = sentiment.score
         Sentiment['userId'] = userId
         Sentiment['user_display_name'] = profile.display_name
-        Sentiment['timestamp'] = timestamp
+        Sentiment['timestamp'] = event.timestamp
 
         datastore_client.put(Sentiment)
 
