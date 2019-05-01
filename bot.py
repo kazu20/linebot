@@ -65,6 +65,7 @@ def handle_message(event):
         # 最新100件についての割合を出す
         query = datastore_client.query(kind='Sentiment')
         query.add_filter('userId', '=', userId)
+        query.order = ['-timestamp']
         result = list(query.fetch(limit=200))
 
         # queryの結果からsentimentだけのnumpy arrayを作成
