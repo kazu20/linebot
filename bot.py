@@ -70,7 +70,7 @@ def handle_message(event):
         # sentiment > 0.5の場合はポジティブ
         # sentiiment < -0.5の場合はネガティブ
         # -0.5 < sentiment < 0.5の場合はニュートラル
-        # 最新100件についての割合を出す
+        # 最新200件についての割合を出す
         query = datastore_client.query(kind='Sentiment')
         query.add_filter('userId', '=', userId)
         query.order = ['-timestamp']
