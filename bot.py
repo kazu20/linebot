@@ -130,18 +130,9 @@ def handle_message(event):
         datastore_client.put(Sentiment)
 
 
-@handler.add(MessageEvent, message=StickerMessage)
-def handle_sticker(event):
-    line_bot_api.reply_message(
-        event.reply_token,
-        TextSendMessage(text="スタンプは使えません"))
-
-
 @handler.default()
 def default(event):
-    line_bot_api.reply_message(
-        event.reply_token,
-        TextSendMessage(text="テキストメッセージを送ってください。"))
+    return 0
 
 
 if __name__ == "__main__":
