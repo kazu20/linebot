@@ -134,7 +134,7 @@ def handle_message(event):
 def handle_sticker(event):
     line_bot_api.reply_message(
         event.reply_token,
-        TextSendMessage(text="スタンプはスタンプは使えません"))
+        TextSendMessage(text="スタンプは使えません"))
 
 
 @handler.default()
