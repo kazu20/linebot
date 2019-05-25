@@ -8,7 +8,9 @@ Botを動かすのに必要な条件は以下のとおり。
 
 このBotを動かすには、以下サービスのアカウントが必要になる。どちらも無料で使えるので、事前に準備をしておく。
 
-Google Natural Language API (<https://cloud.google.com/natural-language/>)
+Google Cloud Natural Language API (<https://cloud.google.com/natural-language/>)
+
+Google Cloud Datastore (<https://cloud.google.com/datastore/>)
 
 LINE Developers(<https://developers.line.biz/ja/>)
 
