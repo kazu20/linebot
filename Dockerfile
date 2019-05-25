@@ -2,7 +2,7 @@ FROM python:3.6
 
 ARG project_dir=/app/
 
-ADD bot.py Private.json $project_dir
+ADD bot.py ../gcp/Private.json $project_dir
 
 WORKDIR $project_dir
 

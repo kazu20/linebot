@@ -29,7 +29,7 @@ Dockerイメージをビルドする。ビルド時にGoogle Natural Language AP
 ``` bash
 $ git clone https://github.com/kazu20/linebot/
 Cloning into 'linebot'...
-# ダウンロードしたPrivate.jsonをDockerfileと同じディレクトリにコピーする。
+# ダウンロードしたPrivate.jsonを../gcp/にコピーする。
 $ docker build -t YOUR_IMAGE_NAME .
 Successfully tagged test:YOUR_IMAGE_NAME
 ```
