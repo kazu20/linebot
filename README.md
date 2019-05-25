@@ -16,7 +16,7 @@ LINE Developers(<https://developers.line.biz/ja/>)
 
 動作確認した環境はは以下のとおり。
 
-- Ubuntu 8.04.1 LTS
+- Ubuntu 18.04.1 LTS
 - Docker 18.06.1-ce
 - Docker-compose 1.23.2
 
